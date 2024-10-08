@@ -3,27 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
 class MainController extends Controller
 {
     public function index()
-    // {
-    //     return view('welcome');
-    // }
-    // public function show(Event $event)
-    // public function show($event)
     {
+        $response = Http::get('http://api.weatherapi.com/v1', [
+            'key' => env('WEATHER_API_KEY'),
+            'q' => 'London',
+            'days' => 1,
+            'aqi' => 'no',
+            'alerts' => 'no',
+            'lang' => 'en',
+            'hours' => '3'
+        ]);
         return Inertia::render('App/App', [
-            'user' => [
-                'name' => 'Jhon Doe',
-            ],
-            // 'event' => $event->only(
-            //     'id',
-            //     'title',
-            //     'start_date',
-            //     'description'
-            // ),
+            'response' => $response->json()
         ]);
     }
 }
