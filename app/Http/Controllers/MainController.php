@@ -10,7 +10,7 @@ class MainController extends Controller
 {
     public function index()
     {
-        $response = Http::get('http://api.weatherapi.com/v1', [
+        $response = Http::get('http://api.weatherapi.com/v1/current.json', [
             'key' => env('WEATHER_API_KEY'),
             'q' => 'London',
             'days' => 1,
