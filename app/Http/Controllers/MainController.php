@@ -10,17 +10,17 @@ class MainController extends Controller
 {
     public function index()
     {
-        $response = Http::get('http://api.weatherapi.com/v1/current.json', [
+        $response = Http::get('http://api.weatherapi.com/v1/forecast.json', [
             'key' => env('WEATHER_API_KEY'),
-            'q' => 'London',
-            'days' => 1,
+            'q' => 'Moscow',
+            'days' => 2,
             'aqi' => 'no',
             'alerts' => 'no',
             'lang' => 'en',
-            'hours' => '3'
+            'hour' => '12'
         ]);
         return Inertia::render('App/App', [
-            'response' => $response->json()
+            'data' => array_values($response->json()['forecast'])[0]
         ]);
     }
 }

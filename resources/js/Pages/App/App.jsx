@@ -1,48 +1,38 @@
 import React from 'react';
 import { Head } from '@inertiajs/react'
+import '../../../css/app.css';
 
-// const getItemsHtml = (items) => {
-//     let html = '';
-//     for (const [key, item] of Object.entries(items)) {
-//         html += `<div>${key}</div><br />`;
-//         for (const [name, field] of Object.entries(item)) {
-//             html += `<div>${name} : ${field}</div><br />`;
-//         }
-//     }
-//     return html;
-// };
-
-export default function App({ response }) {
-//   console.log(response);
-//   console.log(Object.entries(response));
-  let responseArr = Object.entries(response);
-  let locationTitle = responseArr[0][0]; 
-  let locationData = responseArr[0][1]; 
-  
-  let currentTitle = responseArr[1][0]; 
-  let currentData = responseArr[1][1];
-  console.log(currentData);
-  
+export default function App({ data }) {
+  const Block = ({ title, icon, temperature, items }) => {
+    return (
+      <div className="block">
+        <h2>{title}</h2>
+        <div className="icon-temp">
+          <img src={icon} alt={`Иконка ${title}`} />
+          <p className="temperature">{temperature}</p>
+        </div>
+        <ul>
+          {/* {items.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))} */}
+        </ul>
+      </div>
+    );
+  };
   return (
     <>
-        <Head title="Welcome" />
-        <h1>Welcome</h1>
-        <h2>{locationTitle}</h2>
-        <div>
-            <ul>
-                {Object.entries(locationData).map(([key, value]) => (
-                    <li key={key}>{key}: {value}</li>
-                ))}
-            </ul>
-        </div>
-        {/* <h2>{currentTitle}</h2>
-        <div>
-            <ul>
-                {Object.entries(currentData).map(([key, value]) => (
-                    <li key={key}>{key}: {value}</li>
-                ))}
-            </ul>
-        </div> */}
+    <Head title="Прогноз погоды на ближайшие 2 дня. Москва и область." />
+    <div className="container">
+        {data.map((item, index) => (
+          <Block
+            key={index}
+            title={item.title}
+            icon={item.icon}
+            temperature={item.temperature}
+            items={item.items}
+          />
+        ))}
+    </div>
     </> 
   )
 }
