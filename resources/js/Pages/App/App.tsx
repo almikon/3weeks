@@ -1,16 +1,21 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Head } from '@inertiajs/react'
 import Block from './components/Block';
 import '../../../css/app.css';
 
-export default function App({ data, city_name }) {
+interface Props {
+  data: [{ date: string, day: { avgtemp_c: number, condition: { icon: string } } }];
+  city_name: string;
+}
+
+const App: FC<Props> = (props: Props) => {
   return (
     <>
     <Head title="Прогноз погоды на ближайшие 2 дня. Москва и область." />
     <div className="wrapper">
-      <h1>{city_name}</h1>
+      <h1>{props.city_name}</h1>
       <div className="container">
-          {data.map((item, index) => (
+          {props.data.map((item, index) => (
             <Block
               key={index}
               date={item.date}
@@ -23,3 +28,5 @@ export default function App({ data, city_name }) {
     </>
   )
 }
+
+export default App;
