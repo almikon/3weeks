@@ -1,41 +1,25 @@
 import React from 'react';
 import { Head } from '@inertiajs/react'
+import Block from './components/Block';
 import '../../../css/app.css';
 
-export default function App({ data }) {
-  const Block = ({ title, icon, temperature, items }) => {
-    return (
-      <div className="block">
-        <h2>{title}</h2>
-        <div className="icon-temp">
-          <img src={icon} alt={`Иконка ${title}`} />
-          <p className="temperature">{temperature}</p>
-        </div>
-        <ul>
-          {/* {items.map((item, index) => (
-            <li key={index}>{item}</li>
-          ))} */}
-        </ul>
-      </div>
-    );
-  };
+export default function App({ data, city_name }) {
   return (
     <>
     <Head title="Прогноз погоды на ближайшие 2 дня. Москва и область." />
-    <div className="container">
-        {data.map((item, index) => (
-          <Block
-            key={index}
-            title={item.title}
-            icon={item.icon}
-            temperature={item.temperature}
-            items={item.items}
-          />
-        ))}
+    <div className="wrapper">
+      <h1>{city_name}</h1>
+      <div className="container">
+          {data.map((item, index) => (
+            <Block
+              key={index}
+              date={item.date}
+              icon={item.day.condition.icon}
+              temperature={item.day.avgtemp_c}
+            />
+          ))}
+      </div>
     </div>
-    </> 
+    </>
   )
 }
-
-// <Layout>
-// </Layout>

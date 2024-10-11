@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
@@ -19,8 +18,11 @@ class MainController extends Controller
             'lang' => 'en',
             'hour' => '12'
         ]);
+
+        $json = $response->json();
         return Inertia::render('App/App', [
-            'data' => array_values($response->json()['forecast'])[0]
+            'city_name' => $json['location']['name'],
+            'data' => $json['forecast']['forecastday']
         ]);
     }
 }
