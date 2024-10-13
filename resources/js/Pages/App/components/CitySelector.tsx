@@ -1,59 +1,24 @@
 import React, { useState } from 'react';
 
 const CitySelector = () => {
-  const [selectedCity, setSelectedCity] = useState('');
-  const [distance, setDistance] = useState(0);
-  const [manualDistance, setManualDistance] = useState('');
-
-  const cities = ['Москва', 'Санкт-Петербург', 'Новосибирск', 'Екатеринбург', 'Нижний Новгород'];
-
-  const handleDistanceChange = (value) => {
-    setDistance(value);
-    setManualDistance(value.toString());
-  };
+  const [distance, setDistance] = useState(200);
 
   return (
-    <div>
-      <label htmlFor="citySelect">Выберите город:</label>
-      <select 
-        id="citySelect" 
-        value={selectedCity} 
-        onChange={(e) => setSelectedCity(e.target.value)}
-      >
-        <option value="">Выберите город</option>
-        {cities.map((city, index) => (
-          <option key={index} value={city}>
-            {city}
-          </option>
-        ))}
-      </select>
-
+    <div className="block">
+      <h2>Москва</h2>
       <div>
         <label htmlFor="distanceSlider">Расстояние от города (км):</label>
-        <input 
-          type="range" 
-          id="distanceSlider" 
-          min="0" 
-          max="100" 
-          value={distance} 
-          onChange={(e) => handleDistanceChange(e.target.value)}
+        <input
+          type="range"
+          id="distanceSlider"
+          min="50"
+          max="400"
+          value={distance}
+          onChange={(e) => setDistance(parseInt(e.target.value) || 0)}
         />
         <span>{distance} км</span>
       </div>
-
-      <div>
-        <label htmlFor="manualDistance">Введите расстояние вручную:</label>
-        <input 
-          type="number" 
-          id="manualDistance" 
-          value={manualDistance} 
-          onChange={(e) => {
-            const value = parseInt(e.target.value) || 0;
-            setManualDistance(e.target.value);
-            setDistance(value);
-          }}
-        />
-      </div>
+      <button>Показать лучшие места для отдыха</button>
     </div>
   );
 };
