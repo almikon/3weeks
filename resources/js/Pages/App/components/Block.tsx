@@ -1,21 +1,23 @@
-import React, { FC } from 'react';
+import React from 'react';
 
-type Props = {
-    date: string,
-    icon: string,
-    temperature: number
+interface Props {
+  date: string;
+  icon: string;
+  temperature: number;
+  condition: string;
 }
 
-const Block: FC<Props> = ({ date, icon, temperature}) => {
-    return (
-    <div className="block">
-        <h2>{date.split('-').reverse().join('.')}</h2>
-        <div className="icon-temp">
-        <img src={icon} />
-        <p className="temperature">{temperature}&deg;C</p>
-        </div>
+const Block: React.FC<Props> = ({ date, icon, temperature, condition }) => {
+  return (
+    <div className="weather-block">
+      <h3>{date}</h3>
+      <div className="weather-info">
+        <img src={icon} alt={condition} className="weather-icon" />
+        <p className="temperature">{temperature}°C</p>
+      </div>
+      <p className="condition">{condition}</p>
     </div>
-    );
+  );
 };
 
 export default Block;

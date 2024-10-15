@@ -1,65 +1,97 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
-}
-
 .wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.block {
-  width: 300px;
+  max-width: 800px;
+  margin: 0 auto;
   padding: 20px;
-  margin: 0 20px;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.city-selector {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+
+  h2 {
+    margin-bottom: 15px;
+  }
+
+  .slider-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+
+    label {
+      margin-right: 10px;
+    }
+
+    input[type="range"] {
+      flex-grow: 1;
+      margin-right: 10px;
+    }
+  }
+
+  .submit-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+
+    &:hover {
+      background-color: #45a049;
+    }
+  }
+}
+
+.weather-result {
+  h2 {
+    margin-bottom: 15px;
+  }
+
+  .forecast-container {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.weather-block {
+  background-color: #e9e9e9;
+  padding: 15px;
+  border-radius: 8px;
   text-align: center;
+  width: 45%;
+
+  h3 {
+    margin-bottom: 10px;
+  }
+
+  .weather-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .weather-icon {
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+    }
+
+    .temperature {
+      font-size: 24px;
+      font-weight: bold;
+    }
+  }
+
+  .condition {
+    font-style: italic;
+  }
 }
 
-h2 {
-  color: #333;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.icon-temp {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.icon-temp img {
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
-}
-
-.temperature {
+.loading {
+  text-align: center;
   font-size: 18px;
-  color: #666;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-li {
-  margin-bottom: 10px;
-  color: #666;
+  margin-top: 20px;
 }

@@ -1,52 +1,61 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Head } from '@inertiajs/react'
-import Block from './components/Block';
+import React, { FC, useState } from 'react';
+import { Head } from '@inertiajs/react';
 import '../../../css/app.scss';
 import CitySelector from './components/CitySelector';
+import WeatherResult from './components/WeatherResult';
+
+interface WeatherData {
+  city: string;
+  temperature: number;
+  condition: string;
+  icon: string;
+}
 
 interface Props {
-  data: [{ date: string, day: { avgtemp_c: number, condition: { icon: string } } }];
-  city_name: string;
+  initialCity: string;
 }
 
-const getForecast = async (currentDate: Date, city: string) => {
-  return await fetch('/api/weather', {
-    method: 'POST',
-    body: JSON.stringify({
-      date: currentDate,
-      city
-    })
-  });
-}
+const App: FC<Props> = ({ initialCity }) => {
+  const [loading, setLoading] = useState(false);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
-const App: FC<Props> = (props: Props) => {
-  const [result, setResult] = useState(false);
-
-  const handleSubmit = async () => {
-    const response = await getForecast(new Date(), 'Москва');
+  const handleForecastRequest = async (city: string, distance: number) => {
+    setLoading(true);
+    try {
+      // const response = await fetch('/api/forecast', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ city, distance }),
+      // });
+      // const data = await response.json();
+      
+      //тестируем
+      const data = {
+        city,
+        temperature: 20,
+        condition: 'Ясно',
+        icon: 'https://openweathermap.org/img/wn/01d@2x.png',
+      }
+      setWeatherData(data);
+    } catch (error) {
+      console.error('Error fetching forecast:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
-    <Head title="Прогноз погоды на ближайшие 2 дня. Москва и область." />
-    <div className="wrapper">
-      <CitySelector />
-      {result && <div>
-        <h1>{props.city_name}</h1>
-        <div className="container">
-          {props.data.map((item, index) => (
-            <Block
-              key={index}
-              date={item.date}
-              icon={item.day.condition.icon}
-              temperature={item.day.avgtemp_c}
-            />
-          ))}
-        </div>
-      </div>}
-    </div>
+      <Head title={`Прогноз погоды на ближайшие 2 дня. ${initialCity} и область.`} />
+      <div className="wrapper">
+        <CitySelector initialCity={initialCity} onSubmit={handleForecastRequest} />
+        {loading && <div className="loading">Загрузка...</div>}
+        {weatherData && <WeatherResult data={weatherData} />}
+      </div>
     </>
-  )
-}
+  );
+};
 
 export default App;
