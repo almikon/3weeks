@@ -22,27 +22,28 @@ const App: FC<Props> = ({ initialCity }) => {
   const handleForecastRequest = async (city: string, distance: number) => {
     setLoading(true);
     try {
-      // const response = await fetch('/api/forecast', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ city, distance }),
-      // });
-      // const data = await response.json();
-      
-      //тестируем
-      const data = {
-        city,
-        temperature: 20,
-        condition: 'Ясно',
-        icon: 'https://openweathermap.org/img/wn/01d@2x.png',
-      }
-      setWeatherData(data);
+      const result = await getForecast(city, distance);
+      setWeatherData(result);
     } catch (error) {
       console.error('Error fetching forecast:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const getForecast = async (city: string, distance: number) => {
+    try {
+      const response = await fetch(`/api/forecast?city=${encodeURIComponent(city)}&distance=${distance}`);
+
+      if (!response.ok) {
+        throw new Error('Ошибка при получении прогноза');
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Ошибка:', error);
+      throw error;
     }
   };
 
