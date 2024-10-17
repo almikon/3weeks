@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\WeatherForecast;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class FetchWeatherData extends Command
@@ -27,12 +28,16 @@ class FetchWeatherData extends Command
      */
     public function handle()
     {
-        $cities = ['Moscow', 'Khimki', 'Zelenograd', 'Podolsk', 'Mytishchi'];
+        $cities = DB::table('cities')
+            ->select(['lat', 'lon', 'name_rus'])
+            ->get()
+            ->map(fn($city) => [(float)$city->lat, (float)$city->lon])
+            ->toArray();
 
-        foreach ($cities as $city) {
+        foreach ($cities as $cityData) {
             $response = Http::get('http://api.weatherapi.com/v1/forecast.json', [
                 'key' => env('WEATHER_API_KEY'),
-                'q' => $city,
+                'q' => $cityData[0] . ',' . $cityData[1],
                 'days' => 2,
                 'aqi' => 'no',
                 'alerts' => 'no',
@@ -44,7 +49,7 @@ class FetchWeatherData extends Command
 
             foreach ($json['forecast']['forecastday'] as $forecast) {
                 WeatherForecast::create([
-                    'city' => $city,
+                    'city' => $cityData[2] ?? '-',
                     'date' => $forecast['date'],
                     'max_temp' => $forecast['day']['maxtemp_c'],
                     'min_temp' => $forecast['day']['mintemp_c'],
@@ -53,7 +58,7 @@ class FetchWeatherData extends Command
                 ]);
             }
 
-            $this->info("Weather data fetched for $city");
+            $this->info("Weather data fetched for $cityData[2]");
         }
 
         $this->info('Weather data fetching completed');
